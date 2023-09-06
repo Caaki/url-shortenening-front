@@ -1,0 +1,32 @@
+<!-- Navigation-->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand" [routerLink]="['/']">
+      <img src="assets/logo-white.svg" alt="Logo" height="40">
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+            aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item dropdown" style="margin-top: 2px">
+          <a class="nav-link dropdown-toggle" id="navbarDropdownUrls" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Urls
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownUrls">
+            <li><a class="dropdown-item" [routerLink]="['/urls/new']"><i style="padding-right: 8px;" class="bi bi-receipt"></i>New Urls</a></li>
+            <li><a class="dropdown-item" [routerLink]="['/urls']"><i style="padding-right: 8px;" class="bi bi-receipt-cutoff"></i>All Urls</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" id="navbarDropdownProfile" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="https://img.freepik.com/free-icon/user_318-159711.jpg" alt="john" class="user-avatar-md rounded-circle"></a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownProfile">
+            <li><a class="dropdown-item" [routerLink]="['/profile']"><i style="padding-right: 8px;" class="bi bi-person-circle"></i>John Smith</a></li>
+            <li style="cursor: pointer;"><a class="dropdown-item"><i style="padding-right: 8px;" class="bi bi-box-arrow-in-right"></i>Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

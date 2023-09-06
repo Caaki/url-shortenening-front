@@ -1,5 +1,8 @@
 import {DataState} from "../enum/datastate.enum";
 import {User} from "./user";
+import {UserEvents} from "./userevents";
+import {UrlEvents} from "./urlevents";
+import {Role} from "./role";
 
 export interface LoginState{
     dataState: DataState;
@@ -9,6 +12,8 @@ export interface LoginState{
     isUsingMfa?:boolean;
     phone?: string;
 }
+
+
 
 export interface CustomHttpResponse<T>{
   timestamp: Date;
@@ -22,6 +27,9 @@ export interface CustomHttpResponse<T>{
 
 export interface Profile{
   user?: User;
+  userEvents?: UserEvents[];
+  urlEvents?: UrlEvents[];
+  roles?:Role[];
   access_token:string;
   refresh_token:string;
 }
