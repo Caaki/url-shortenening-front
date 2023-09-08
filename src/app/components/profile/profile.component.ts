@@ -56,7 +56,65 @@ export class ProfileComponent implements OnInit{
       )
   }
 
+  updateUserPassword(updatePasswordForm: NgForm):void{
+    this.isLoadingSubject.next(true);
+    if (updatePasswordForm.value.newPassword === updatePasswordForm.value.confirmPassword){
+      this.profileState$= this.userService.updatePassword$(updatePasswordForm.value)
+        .pipe(
+          map(response =>{
+            console.log(response);
+            updatePasswordForm.reset();
+            this.isLoadingSubject.next(false);
+            return{dataState:DataState.LOADED,appData: this.dataSubject.value};
+          }),
+          startWith({dataState:DataState.LOADING,appData: this.dataSubject.value}),
+          catchError((error: string)=>{
+            this.isLoadingSubject.next(false);
+            updatePasswordForm.reset();
+            return of({dataState:DataState.LOADED, appData:this.dataSubject.value,error})
+          })
+        )
+    }else{
+      updatePasswordForm.reset();
+      this.isLoadingSubject.next(false);
+    }
+  }
 
+  updateUserSettings(settingsForm: NgForm):void{
+    this.isLoadingSubject.next(true)
+    this.profileState$ = this.userService.updateUserSettings$(settingsForm.value)
+      .pipe(
+        map(response =>{
+          console.log(response);
+          this.dataSubject.next({...response, data:response.data});
+          this.isLoadingSubject.next(false);
+          return{dataState: DataState.LOADED, appData:this.dataSubject.value};
+        }),
+        startWith({dataState: DataState.LOADING, appData:this.dataSubject.value}),
+        catchError((error: string)=>{
+          this.isLoadingSubject.next(false)
+          return of({dataState:DataState.LOADED, appData:this.dataSubject.value,error})
+        })
+      )
+  }
+
+  toggleMfa():void{
+    this.isLoadingSubject.next(true)
+    this.profileState$ = this.userService.toggleMfa$()
+      .pipe(
+        map(response =>{
+          console.log(response);
+          this.dataSubject.next({...response, data:response.data});
+          this.isLoadingSubject.next(false);
+          return{dataState: DataState.LOADED, appData:this.dataSubject.value};
+        }),
+        startWith({dataState: DataState.LOADING, appData:this.dataSubject.value}),
+        catchError((error: string)=>{
+          this.isLoadingSubject.next(false)
+          return of({dataState:DataState.LOADED, appData:this.dataSubject.value,error})
+        })
+      )
+  }
 
 
 }

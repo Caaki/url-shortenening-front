@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {UserService} from "../../service/user.service";
 import {Router} from "@angular/router";
 import {NgForm} from "@angular/forms";
@@ -12,7 +12,7 @@ import {Key} from "../../enum/key.enum";
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit{
 
   // @ts-ignore
   loginState$ :Observable<LoginState> = of({dataState: DataState.LOADED});
@@ -22,6 +22,11 @@ export class LoginComponent {
   readonly DataState = DataState;
 
   constructor(private userService: UserService, private router:Router) {
+  }
+
+  ngOnInit(): void {
+    this.userService.isAuthenticated()
+      ? this.router.navigate(['/']) :  this.router.navigate(["/login"]);
   }
 
   login(loginForm: NgForm):void{
@@ -66,4 +71,6 @@ export class LoginComponent {
   loginPage():void{
     this.loginState$ = of({dataState: DataState.LOADED});
   }
+
+
 }
