@@ -18,7 +18,7 @@
                          <span style="position: relative">
                              <img [src]="state?.appData?.data?.user?.imageUrl" alt="{{state?.appData?.data?.user?.firstName}}" class="shadow" />
 
-                         <i class="bi bi-camera-fill right-position"></i>
+                         <i (click)="fileInput.click()"  class="bi bi-camera-fill right-position"></i>
                          </span>
               </div>
               <h4 class="text-center">{{ state?.appData?.data?.user?.firstName }} {{ state?.appData?.data?.user?.lastName }}</h4>
@@ -221,7 +221,7 @@
                     </div>
                     <div class="col-auto">
                       <div class="custom-control custom-switch">
-                        <input type="checkbox" class="custom-control-input" id="activityLog">
+                        <input checked type="checkbox" (change)="toggleLogs()" [disabled]="(isLoading$|async)" class="custom-control-input" id="activityLog">
                         <span class="custom-control-label"></span>
                       </div>
                     </div>
@@ -231,7 +231,7 @@
             </div>
           </div>
         </div>
-        <div class="row">
+        <div *ngIf="(showLogs$|async)" class="row">
           <div class="col-xl-12 mt-4">
             <div class="card" style="border-radius: 8px;">
               <div class="card-body">
@@ -241,6 +241,7 @@
                   <thead>
                   <tr>
                     <th scope="col">Device</th>
+                    <th scope="col">Browser</th>
                     <th scope="col">IP Address</th>
                     <th scope="col">Date</th>
                     <th scope="col">Type</th>
@@ -249,16 +250,28 @@
                   </tr>
                   </thead>
                   <tbody>
-                  <tr >
-                    <td>Chrome</td>
-                    <td>192.168.1.209</td>
-                    <td>01-15-2023 5:25:20</td>
+                  <tr *ngFor="let event of state?.appData?.data?.userEvents">
+                    <td>{{event.device}}</td>
+                    <td>{{event.browser}}</td>
+                    <td>{{event.ip_address}}</td>
+                    <td>{{event.created_at | date: 'MMMM d, y, h:mm a'}}</td>
                     <td>
-                                     <span class="badge pill bg-success">
-                                             LOGIN_ATTEMPT_SUCCESS
+                                     <span class="badge pill bg-success"
+                                           [ngClass] =
+                                             "[event.type == EventType.LOGIN_ATTEMPT_SUCCESS? 'bg-success': '',
+                              event.type == EventType.LOGIN_ATTEMPT? 'bg-warning': '',
+                              event.type == EventType.PROFILE_UPDATE? 'bg-primary': '',
+                              event.type == EventType.LOGIN_ATTEMPT_FAILURE? 'bg-danger': '',
+                              event.type == EventType.PROFILE_PICTURE_UPDATE? 'bg-primary': '',
+                              event.type == EventType.ROLE_UPDATE? 'bg-info': '',
+                              event.type == EventType.ACCOUNT_SETTINGS_UPDATE? 'bg-warning': '',
+                              event.type == EventType.PASSWORD_UPDATE? 'bg-warning': '',
+                              event.type == EventType.MFA_UPDATE? 'bg-info': '']"
+                                     >
+                                             {{event.type}}
                                      </span>
                     </td>
-                    <td>You logged in successfully</td>
+                    <td>{{event.description}}</td>
                     <td>
                       <button type="button" class="btn btn-sm" style="background-color: #fd5d0d; font-weight: 450;">Report</button>
                     </td>
@@ -276,6 +289,6 @@
 
 <!-- profile image change form -->
 <form enctype="multipart/form-data" style="display:none;">
-  <input type="file" name="image" id="image"
+  <input type="file" #fileInput (change)="updatePicture($event.target.files[0])"  name="image" id="image"
          placeholder="file" ngModel accept="image/*" />
 </form>
