@@ -18,8 +18,6 @@ export class ProfileComponent implements OnInit{
   profileState$ :Observable<State<CustomHttpResponse<Profile>>>;
   private dataSubject = new BehaviorSubject<CustomHttpResponse<Profile>>(null);
   private isLoadingSubject = new BehaviorSubject<boolean>(false);
-
-
   private showLogsSubject = new BehaviorSubject<boolean>(true);
   showLogs$ = this.showLogsSubject.asObservable();
 

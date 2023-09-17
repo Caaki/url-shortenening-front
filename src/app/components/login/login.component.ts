@@ -14,6 +14,11 @@ import {Key} from "../../enum/key.enum";
 })
 export class LoginComponent implements OnInit{
 
+  ngOnInit(): void {
+    this.userService.isAuthenticated()
+      ? this.router.navigate(['/']) :  this.router.navigate(["/login"]);
+  }
+
   // @ts-ignore
   loginState$ :Observable<LoginState> = of({dataState: DataState.LOADED});
   //loginState: Observable<LoginState> = new Observable<LoginState>();
@@ -24,10 +29,6 @@ export class LoginComponent implements OnInit{
   constructor(private userService: UserService, private router:Router) {
   }
 
-  ngOnInit(): void {
-    this.userService.isAuthenticated()
-      ? this.router.navigate(['/']) :  this.router.navigate(["/login"]);
-  }
 
   login(loginForm: NgForm):void{
 

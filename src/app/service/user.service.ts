@@ -97,7 +97,6 @@ export class UserService {
   isAuthenticated(): boolean{
     return (this.jwtHelper.decodeToken<string>(localStorage.getItem(Key.TOKEN)))
       && !this.jwtHelper.isTokenExpired(localStorage.getItem(Key.TOKEN));
-
   }
 
   private handleError(error: HttpErrorResponse): Observable<never> {
