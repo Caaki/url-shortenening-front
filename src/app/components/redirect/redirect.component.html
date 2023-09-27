@@ -1,0 +1,13 @@
+<ng-container *ngIf="(redirectState$ | async) as state " [ngSwitch]="state.dataState">
+<section class="d-flex align-items-center justify-content-center" style="min-height: 80vh;">
+  <ng-container *ngSwitchCase="DataState.LOADING">
+
+      <span class="loader"></span>
+    
+  </ng-container>
+  <ng-container *ngSwitchCase="DataState.ERROR">
+    <img src="assets/Bad-Links1.png">
+  </ng-container>
+
+</section>
+    </ng-container>

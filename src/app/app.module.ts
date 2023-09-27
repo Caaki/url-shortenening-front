@@ -16,6 +16,8 @@ import { HomeComponent } from './components/home/home.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { StatsComponent } from './components/stats/stats.component';
 import {TokenInterceptor} from "./interceptor/token.interceptor";
+import { RedirectComponent } from './components/redirect/redirect.component';
+import { NewurlComponent } from './components/newurl/newurl.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +31,9 @@ import {TokenInterceptor} from "./interceptor/token.interceptor";
     UrlsComponent,
     HomeComponent,
     NavbarComponent,
-    StatsComponent
+    StatsComponent,
+    RedirectComponent,
+    NewurlComponent
   ],
   imports: [
     BrowserModule,

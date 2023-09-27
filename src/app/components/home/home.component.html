@@ -1,2 +1,73 @@
-<app-navbar></app-navbar>
-<img src="assets/in_progres.jpg" alt="Paris" class="center">
+<ng-container *ngIf="(homeState$ | async) as state">
+  <ng-container>
+    <app-navbar [user]="state?.appData?.data?.user"></app-navbar>
+    <section>
+      <div class="container" >
+        <div *ngIf="(showLogs$|async)" class="row">
+          <div class="col-xl-12 mt-4">
+            <div class="card" style="border-radius: 8px;">
+              <div class="card-body">
+                <h5 class="card-title">Created links</h5>
+                <h6 class="card-subtitle mb-2 text-muted">All your short redirection links</h6>
+                <table class="table table-hover">
+                  <thead>
+                  <tr>
+                    <th class="text-center" scope="col">ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Real Url</th>
+                    <th scope="col">Short Url</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr *ngFor="let url of state?.appData?.data?.page.content">
+                    <th class="text-center">{{ url.id }}</th>
+                    <td class="max-length-15">{{ url.alias }}</td>
+                    <td ><a href="#" (click)="redirect(url.realUrl)" ><p class="max-length-15">{{ url.realUrl }}</p></a></td>
+                    <td><a  routerLink="/redirect/{{url.shortUrl}}" > <p class="max-length-15">{{ url.shortUrl }}</p></a></td>
+                    <td>
+                               <span class="badge"
+                                     [ngClass]="[
+                                    url.enabled === true ? ' bg-success' : '',
+
+                                    url.enabled === false ? ' bg-danger' : '']"
+                               >
+                                  <ng-container *ngIf="url.enabled">Active</ng-container>
+                                  <ng-container *ngIf="!url.enabled">Disabled</ng-container>
+                               </span>
+                    </td>
+                    <td>
+                      <button type="button" [routerLink]="'/url/'+ url.id"  class="btn btn-info">View</button>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <nav *ngIf="state?.appData?.data?.page.content.length > 0" aria-label="Page navigation example">
+              <ul class="pagination justify-content-end">
+                <li [ngClass]="0 == (currentPage$ | async) ? ' disabled' : ''" class="page-item pointer">
+                  <a (click)="goToNextOrPreviousPage('backward')" class="page-link">&laquo; Prev</a>
+                </li>
+                <li *ngFor="let pageNumber of [].constructor(state?.appData?.data?.page.totalPages); let i = index;" class="page-item pointer">
+                  <a (click)="goToPage(i)" [ngClass]="i == (currentPage$ | async) ? ' active' : ''" class="page-link">
+                    {{ i + 1 }}
+                  </a>
+                </li>
+                <li [ngClass]="(state?.appData?.data?.page.totalPages - 1) == (currentPage$ | async) ? ' disabled' : ''" class="page-item pointer">
+                  <a (click)="goToNextOrPreviousPage('forward')" class="page-link">Next &raquo;</a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </section>
+  </ng-container>
+</ng-container>
+
+
+
+
+

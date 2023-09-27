@@ -1,1 +1,132 @@
-<p>url works!</p>
+<ng-container *ngIf="(urlState$ | async) as state" [ngSwitch]="state.dataState">
+  <ng-container *ngSwitchCase="DataState.LOADED">
+    <app-navbar [user]="state?.appData?.data?.user"></app-navbar>
+    <section>
+      <div class="container">
+        <nav aria-label="breadcrumb" style="margin-top: 8px;">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a [routerLink]="['/']">Home</a></li>
+            <li class="breadcrumb-item"><a [routerLink]="['/urls']">Urls</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ state?.appData?.data?.url?.alias }}</li>
+          </ol>
+        </nav>
+        <div class="row">
+          <div class="col-xl-4">
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex align-items-start">
+                  <div class="w-100 ms-4">
+                    <h4 class="my-0">{{ state?.appData?.data?.url?.alias }}</h4>
+                    <p class="" style="font-size: 13px;">{{ state?.appData?.data?.url?.realUrl }}</p>
+                    <span class="badge" style="position: absolute;bottom:60px;left: 113px; top: 70px;font-size: 11px; height: 18px;"
+                          [ngClass]="[
+                                    state?.appData?.data?.url?.enabled === 'true' ? ' bg-success' : '',
+                                    state?.appData?.data?.url?.enabled === 'false' ? ' bg-danger' : '',
+                                    ]" >
+                      <ng-container *ngIf="state?.appData?.data?.url?.enabled">
+                        Active
+                      </ng-container >
+                      <ng-container *ngIf="!state?.appData?.data?.url?.enabled">
+                        Disabled
+                      </ng-container>
+
+                         </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Total Url interactions</h5>
+                <ul class="list-group">
+                  <li class="list-group-item d-flex justify-content-between align-items-center" style="font-size: 20px;">
+                    Visit count:
+                    <span class="" style="font-size: 20px;">
+                              {{ state?.appData?.data?.urlEvents.length }}
+                            </span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-8">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Url Details</h5>
+                <form #urlForm="ngForm" (ngSubmit)="updateUrl(urlForm)">
+                  <input type="hidden" [ngModel]="state?.appData?.data?.url.id" name="id" [disabled]="!state?.appData?.data?.user?.permissions.includes('UPDATE:URL') || (isLoading$ | async)">
+                  <input type="hidden" [ngModel]="state?.appData?.data?.url.createdAt" name="createdAt" [disabled]="!state?.appData?.data?.user?.permissions.includes('UPDATE:URL') || (isLoading$ | async)">
+                  <div class="row mb-3">
+                    <label for="alias" class="col-sm-3 col-form-label">Alias</label>
+                    <div class="col-sm-9">
+                      <input type="text" id="alias" [ngModel]="state?.appData?.data?.url.alias" name="alias" [disabled]="!state?.appData?.data?.user?.permissions.includes('UPDATE:URL') || (isLoading$ | async)" class="form-control">
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="realUrl" class="col-sm-3 col-form-label">Real url</label>
+                    <div class="col-sm-9">
+                      <input type="text" id="realUrl" [ngModel]="state?.appData?.data?.url.realUrl" name="realUrl" [disabled]="!state?.appData?.data?.user?.permissions.includes('UPDATE:URL') || (isLoading$ | async)" class="form-control">
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="shortUrl" class="col-sm-3 col-form-label">Short Url</label>
+                    <div class="col-sm-9">
+                      <input type="text" [ngModel]="state?.appData?.data?.url.shortUrl" id="shortUrl" name="shortUrl" [disabled]="!state?.appData?.data?.user?.permissions.includes('UPDATE:URL') || (isLoading$ | async)" class="form-control">
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="enabled" class="col-sm-3 col-form-label">Status</label>
+                    <select name="enabled" [disabled]="!state?.appData?.data?.user?.permissions.includes('UPDATE:URL') || (isLoading$ | async)" [ngModel]="state?.appData?.data?.url.enabled" id="enabled" class="form-control" required>
+                      <option value="false">Disabled</option>
+                      <option value="true" [selected]="true">Enabled</option>
+                    </select>
+                  </div>
+
+
+                  <button [disabled]="!state?.appData?.data?.user?.permissions.includes('UPDATE:URL') || (isLoading$ | async)" type="submit" class="btn btn-primary float-end">
+                    <span *ngIf="isLoading$ | async" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="margin-right: 5px;"></span>
+                    <span *ngIf="isLoading$ | async">Loading...</span>
+                    <span *ngIf="!(isLoading$ | async)">Update</span>
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xl-12">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Invoices</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Customer Invoices</h6>
+                <table class="table table-hover">
+                  <thead class="table-dark">
+                  <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Device</th>
+                    <th scope="col">Browser</th>
+                    <th scope="col">IP Address</th>
+                    <th scope="col">Date</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr *ngFor="let invoice of state?.appData?.data?.urlEvents">
+                    <td>{{ invoice.id }}</td>
+                    <td>{{ invoice.device }}</td>
+                    <td>{{ invoice.browser }}</td>
+                    <td>{{ invoice.ipAddress }}</td>
+                    <td>{{ invoice.createdAt| date: 'mediumDate' }}</td>
+<!--                    <td>-->
+<!--                      <button type="button" [routerLink]="['/invoices', invoice.id, invoice.invoiceNumber]" class="btn btn-info btn-sm">Print</button>-->
+<!--                    </td>-->
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </ng-container>
+</ng-container>

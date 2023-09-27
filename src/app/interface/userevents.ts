@@ -4,7 +4,7 @@ export interface UserEvents{
     id:number;
     type:EventType;
     description:string;
-    ip_address?: string;
+    ipAddress?: string;
     device?:string;
     browser?:string;
     created_at:Date;

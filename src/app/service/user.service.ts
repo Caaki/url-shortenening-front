@@ -67,7 +67,7 @@ export class UserService {
 
   refreshToken$ = () => <Observable<CustomHttpResponse<Profile>>>
     this.http.get<CustomHttpResponse<Profile>>
-    (`${this.server}/user/refresh/token`)
+    (`${this.server}/user/refresh/token`,{headers: {Authorization: `Bearer ${localStorage.getItem(Key.REFRESH_TOKEN)}`}})
       .pipe(
         tap(response => {
           localStorage.removeItem(Key.TOKEN);
@@ -95,8 +95,8 @@ export class UserService {
       );
 
   isAuthenticated(): boolean{
-    return (this.jwtHelper.decodeToken<string>(localStorage.getItem(Key.TOKEN)))
-      && !this.jwtHelper.isTokenExpired(localStorage.getItem(Key.TOKEN));
+    return (this.jwtHelper.decodeToken<string>(localStorage.getItem(Key.REFRESH_TOKEN)))
+      && !this.jwtHelper.isTokenExpired(localStorage.getItem(Key.REFRESH_TOKEN)) ;
   }
 
   private handleError(error: HttpErrorResponse): Observable<never> {

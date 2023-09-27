@@ -3,12 +3,14 @@ import {EventType} from "../enum/event-type.enum";
 export interface UrlEvents{
 
   id:number;
-  type:EventType;
-  description:string;
-  url:string;
-  ip_address?: string;
+  alisa:string;
+  realUrl:string;
+  shortUrl:string;
+  userId:number;
+  urlId:number;
   device?:string;
   browser?:string;
-  created_at:Date;
+  ipAddress?: string;
+  createdAt:Date;
 
 }

@@ -3,6 +3,8 @@ import {User} from "./user";
 import {UserEvents} from "./userevents";
 import {UrlEvents} from "./urlevents";
 import {Role} from "./role";
+import {Url} from "./url";
+
 
 export interface LoginState{
     dataState: DataState;
@@ -33,5 +35,25 @@ export interface Profile{
   access_token:string;
   refresh_token:string;
 }
+
+export interface Page {
+  page: {
+    content?: Url[];
+    totalPages?: number;
+    totalElements?: number;
+    numberOfElements?: number;
+    size?: number;
+    number?: number;
+  }
+}
+
+
+  export interface UrlDetails{
+    url ? : Url;
+    urlEvents:UrlEvents[];
+    user: User;
+}
+
+
 
 

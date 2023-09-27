@@ -251,9 +251,10 @@
                   </thead>
                   <tbody>
                   <tr *ngFor="let event of state?.appData?.data?.userEvents">
+
                     <td>{{event.device}}</td>
                     <td>{{event.browser}}</td>
-                    <td>{{event.ip_address}}</td>
+                    <td>{{event.ipAddress}}</td>
                     <td>{{event.created_at | date: 'MMMM d, y, h:mm a'}}</td>
                     <td>
                                      <span class="badge pill bg-success"

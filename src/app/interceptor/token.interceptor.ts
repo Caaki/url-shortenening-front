@@ -20,7 +20,8 @@ export class TokenInterceptor implements HttpInterceptor {
     'http://192.168.1.44:8080/user/verify/password',
     'http://192.168.1.44:8080/user/resetpassword',
     'http://192.168.1.44:8080/user/verify/account',
-    'http://192.168.1.44:8080/user/refresh/token'
+    'http://192.168.1.44:8080/user/refresh/token',
+    'http://192.168.1.44:8080/url/redirect'
   ];
 
   private isTokenRefreshing: boolean =false;
@@ -33,6 +34,7 @@ export class TokenInterceptor implements HttpInterceptor {
     if (isAllowedPath){
       return next.handle(request);
     }else{
+
       return next.handle(this.addAuthorizationTokenHeader(request,localStorage.getItem(Key.TOKEN)))
         .pipe(
           catchError((error:HttpErrorResponse) =>{
@@ -52,7 +54,6 @@ export class TokenInterceptor implements HttpInterceptor {
 
   private handleRefreshToken(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     if (!this.isTokenRefreshing){
-      //console.log("Refreshing token");
       this.isTokenRefreshing = true;
       this.refreshTokenSubject.next(null);
       return this.userService.refreshToken$().pipe(

@@ -4,3 +4,19 @@
   margin-right: auto;
   width: 50%;
 }
+
+.max-length-15{
+
+  max-width: 15ch ;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.max-length-20{
+
+  max-width: 20ch ;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
